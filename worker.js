@@ -28,8 +28,8 @@ export default {
     const cached = await cache.match(request);
     if (cached) return cached;
 
-    // 3) 拉取加密文件
-    const resp = await fetch(env.ENC_URL);
+    // 3) 拉取加密文件。不走边缘缓存，否则更换列表后还会解到旧密文。
+    const resp = await fetch(env.ENC_URL, { cache: "no-store" });
     if (!resp.ok) return new Response("upstream fetch failed", { status: 502 });
     const buf = new Uint8Array(await resp.arrayBuffer());
 
@@ -56,7 +56,12 @@ export default {
     const iv = dk.slice(32, 48);
 
     // 6) 解密
-    const pt = await crypto.subtle.decrypt({ name: "AES-CBC", iv }, aesKey, ct);
+    let pt;
+    try {
+      pt = await crypto.subtle.decrypt({ name: "AES-CBC", iv }, aesKey, ct);
+    } catch {
+      return new Response("decrypt failed", { status: 502 });
+    }
 
     // 7) 返回明文 M3U
     const out = new Response(pt, {
