@@ -9,3 +9,6 @@ passphrase*
 
 # macOS
 .DS_Store
+
+# Wrangler local cache
+.wrangler/
