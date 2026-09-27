@@ -1,0 +1,11 @@
+# 明文播放列表绝不提交
+iptv.m3u
+*.m3u
+
+# 密钥文件绝不提交
+*.key
+secrets*
+passphrase*
+
+# macOS
+.DS_Store
