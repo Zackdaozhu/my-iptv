@@ -328,7 +328,7 @@ elif final:
   if push.returncode:
    print('GitHub 推送失败；本地提交已保留，下次可重试。',file=sys.stderr); sys.exit(1)
   marker.write_text(digest+'\n',encoding='utf-8')
-  print('已加密并推送到 GitHub；APTV 原订阅地址可继续使用。')
+  print('已加密并推送到 GitHub；使用本机 ACCESS_KEY 的 APTV 订阅可继续刷新。')
 else:
  print('没有通过检测的频道，保留上次文件。',file=sys.stderr)
  sys.exit(1)
